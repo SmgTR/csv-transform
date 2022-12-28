@@ -1,0 +1,45 @@
+body {
+  background-color: #fff;
+}
+
+p {
+  font-size: 28px;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(138deg, #3023ae, #c86dd7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: 'IBM Plex Sans', sans-serif;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.download_form button {
+  border: none;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 20px 20px;
+  border: 1px solid #f43f85;
+  border-radius: 6px;
+  outline-offset: -1px;
+  outline-color: #ec5891;
+  color: #f43f85;
+  transition: transform 0.4s, box-shadow 0.4s;
+  font-weight: bold;
+}
+
+.download_form button:hover {
+  cursor: pointer;
+  transform: translateY(-4px);
+  box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+}
+
+.download_form button i {
+  margin-right: 12px;
+}
