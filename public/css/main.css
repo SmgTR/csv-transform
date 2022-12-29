@@ -2,7 +2,7 @@ body {
   background-color: #fff;
 }
 
-p {
+.title {
   font-size: 28px;
   -webkit-text-fill-color: transparent;
   background: linear-gradient(138deg, #3023ae, #c86dd7);
@@ -34,10 +34,16 @@ p {
   font-weight: bold;
 }
 
-.download_form button:hover {
-  cursor: pointer;
-  transform: translateY(-4px);
-  box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+@media (min-width: 757px) {
+  .download_form button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+  }
+
+  .download_form button:active {
+    transform: translateY(0);
+  }
 }
 
 .download_form button i {
