@@ -1,18 +1,14 @@
 import filterCandidatesData from '@/utils/filterCandidatesData';
 import getAllPages from '@/utils/getAllPages';
-import { CandidateData } from 'types/candidateTypes';
 
 const getCandidatesData = async () => {
-  const candidatesData: CandidateData = await new Promise((resolve, reject) => {
-    getAllPages(
-      'https://api.teamtailor.com/v1/candidates?include=job-applications&page[size]=30',
-      { candidates: [], applications: [] },
-      resolve,
-      reject
-    );
-  });
+  const candidatesData = await getAllPages(
+    'https://api.teamtailor.com/v1/candidates?include=job-applications&page[size]=30',
+    { candidates: [], applications: [] }
+  );
 
-  return filterCandidatesData(candidatesData);
+  if (candidatesData?.candidates) return filterCandidatesData(candidatesData);
+  throw new Error();
 };
 
 export default getCandidatesData;

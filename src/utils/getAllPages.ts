@@ -1,37 +1,39 @@
 import axios from 'axios';
-import { CandidateData } from 'types/candidateTypes';
+import { CandidateData, Candidate, JobApplication } from 'types/candidateTypes';
 
-const getAllPages = async (url: string, candidates: CandidateData, resolve: any, reject: any) => {
-  await axios
-    .get(url, {
-      headers: {
-        Authorization: `Token token=${process.env.API_KEY}`,
-        'X-Api-Version': '20210218'
-      }
-    })
-    .then((response) => {
-      const dataResult = response.data.data;
-      const includedData = response.data.included;
+type GetAllPagesReturn = Promise<
+  | {
+      candidates: Candidate[];
+      applications: JobApplication[];
+      error?: undefined;
+      err?: undefined;
+    }
+  | { error: string; err: unknown; candidates?: undefined; applications?: undefined }
+>;
 
-      const retrievedCandidates = candidates.candidates.concat(dataResult);
-      const retrievedInclude = candidates.applications.concat(includedData);
-      const nextPage = response.data.links.next && decodeURIComponent(response.data.links.next);
+const getAllPages = async (url: string, candidates: CandidateData): GetAllPagesReturn => {
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Token token=${process.env.API_KEY}`,
+      'X-Api-Version': '20210218'
+    }
+  });
 
-      if (nextPage) {
-        retrievedCandidates &&
-          getAllPages(
-            nextPage,
-            { candidates: retrievedCandidates, applications: retrievedInclude },
-            resolve,
-            reject
-          );
-      } else {
-        resolve({ candidates: retrievedCandidates, applications: retrievedInclude });
-      }
-    })
-    .catch((err) => {
-      reject({ error: 'Something went wrong. Please try again.', err });
+  const dataResult = response.data.data;
+  const includedData = response.data.included;
+
+  const retrievedCandidates = candidates.candidates.concat(dataResult);
+  const retrievedInclude = candidates.applications.concat(includedData);
+  const nextPage = response.data.links.next && decodeURIComponent(response.data.links.next);
+
+  if (nextPage && retrievedCandidates) {
+    return await getAllPages(nextPage, {
+      candidates: retrievedCandidates,
+      applications: retrievedInclude
     });
+  } else {
+    return { candidates: retrievedCandidates, applications: retrievedInclude };
+  }
 };
 
 export default getAllPages;
